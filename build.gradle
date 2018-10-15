@@ -24,7 +24,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: "com.commercehub.gradle.plugin.avro-base"
 
 
-group = 'com.genesys'
+group = 'com.carlospatinos'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
@@ -35,7 +35,7 @@ repositories {
 }
 
 bootJar {
-	baseName = 'genesys-salesforce-connector'
+	baseName = 'carlospatinos-salesforce-connector'
 	version =  '0.1.0'
 }
 
@@ -61,6 +61,25 @@ dependencies {
 task generateAvro(type: com.commercehub.gradle.plugin.avro.GenerateAvroJavaTask) {
 	source("src/main/resources/avro")
 	outputDir = file("dest/avro")
+}
+
+task createPom << {
+	pom {
+		project {
+			groupId 'com.carlospatinos'
+			artifactId 'salesforceconnector'
+			version '1.0.0'
+
+			inceptionYear '2008'
+			licenses {
+				license {
+					name 'The Apache Software License, Version 2.0'
+					url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					distribution 'repo'
+				}
+			}
+		}
+	}.writeTo("pom.xml")
 }
 
 compileJava.source(generateAvro.outputs)

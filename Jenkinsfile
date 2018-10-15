@@ -17,6 +17,8 @@ pipeline {
       }
       steps {
         echo 'building'
+        sh 'mvn -B -DskipTests clean package'
+        stash name: 'war', includes: 'target/**'
       }
     }
     stage('Testing') {

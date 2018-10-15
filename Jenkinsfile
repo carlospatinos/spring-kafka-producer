@@ -11,14 +11,13 @@ pipeline {
     stage('Build Project') {
       agent {
         docker {
-          image 'maven:3-alpine'
-          args '-v $PWD/.m2:/root/.m2'
+          image 'gradle:latest'
+          args '-v $PWD:/home/gradle/project -w /home/gradle/project'
         }
       }
       steps {
         echo 'building'
-        sh 'mvn -B -DskipTests clean package'
-        stash name: 'war', includes: 'target/**'
+        sh 'gradle build'
       }
     }
     stage('Testing') {

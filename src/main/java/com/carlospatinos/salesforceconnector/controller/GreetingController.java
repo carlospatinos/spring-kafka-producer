@@ -30,7 +30,7 @@ public class GreetingController {
         try {
             User user = User.newBuilder().setName("John Doe").setFavoriteColor("green")
                     .setFavoriteNumber(null).build();
-            sender.send(user);
+            sender.send("salesforce-event",  user);
         } catch (ClassCastException e) {
             logger.error(e.getMessage());
         }

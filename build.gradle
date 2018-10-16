@@ -61,7 +61,7 @@ dependencies {
 	//implementation('org.springframework.boot:spring-boot-starter-security')
 	//testImplementation('org.springframework.security:spring-security-test')
 	implementation('org.springframework.kafka:spring-kafka')
-	testCompile('org.springframework.kafka:spring-kafka-test:2.1.0.RELEASE')
+	testCompile('org.springframework.kafka:spring-kafka-test')
 	compile ('org.apache.avro:avro:1.8.1')
 	//compile ('org.apache.kafka:kafka_2.11:2.0.0')
 	//testCompile('org.springframework.boot:spring-boot-starter-test')

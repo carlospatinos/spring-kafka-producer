@@ -12,15 +12,15 @@ import com.carlospatinos.salesforceconnector.avro.User;
 public class EventSender {
     Logger logger = LoggerFactory.getLogger(EventSender.class);
 
-    @Value("${app.topic.salesforce-event}")
+    @Value("${app.topic.salesforce}")
     private String topic;
 
     @Autowired
     private KafkaTemplate<String, User> kafkaTemplate;
 
 
-    public void send(User user) {
+    public void send(String topic1, User user) {
         logger.info("sending message='{}' to topic='{}'", user, topic);
-        kafkaTemplate.send(topic, user);
+        kafkaTemplate.send(topic1, user);
     }
 }

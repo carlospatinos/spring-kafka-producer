@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import com.carlospatinos.salesforceconnector.avro.User;
 
 @Service
 public class EventSender {
@@ -15,10 +16,11 @@ public class EventSender {
     private String topic;
 
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, User> kafkaTemplate;
 
-    public void send(String payload) {
-        logger.info("sending message='{}' to topic='{}'", payload, topic);
-        kafkaTemplate.send(topic, payload);
+
+    public void send(User user) {
+        logger.info("sending message='{}' to topic='{}'", user, topic);
+        kafkaTemplate.send(topic, user);
     }
 }

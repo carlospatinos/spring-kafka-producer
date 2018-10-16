@@ -16,7 +16,9 @@ pipeline {
         }
       }
       steps {
-        echo 'building'
+        echo 'building $PWD'
+        sh 'pwd'
+        sh 'ls /home/gradle/project'
         sh 'gradle build'
       }
     }
@@ -26,9 +28,16 @@ pipeline {
       }
     }
     stage('Static Analysis') {
-      steps {
-        echo 'Static analysis'
-      }
+            agent {
+              docker {
+                image 'gradle:latest'
+                args '-v $PWD:/home/gradle/project -w /home/gradle/project'
+              }
+            }
+            steps {
+              echo 'building'
+              sh 'gradle pmdMain'
+            }
     }
   }
 }

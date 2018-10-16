@@ -1,5 +1,5 @@
 {
-  "namespace": "com.carlospatinos.salesforceconnector.model",
+  "namespace": "com.carlospatinos.salesforceconnector.avro",
   "type": "record",
   "name": "User",
   "fields": [

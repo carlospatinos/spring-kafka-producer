@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.1.0.M4'
+		springBootVersion = '2.0.0.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -20,6 +20,44 @@ apply plugin: 'maven'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'pmd'
+apply plugin: 'checkstyle'
+checkstyle {
+	toolVersion '7.8.1'
+	configFile file("config/checkstyle/checkstyle.xml")
+}
+checkstyleMain {
+	source ='src/main/java'
+}
+checkstyleTest {
+	source ='src/test/java'
+}
+
+apply plugin: 'findbugs'
+findbugs {
+	ignoreFailures = false
+	toolVersion = "3.0.1"
+	sourceSets=[sourceSets.main]
+	excludeFilter = file("config/findbugs/excludeFilter.xml")
+	reportsDir = file("$project.buildDir/reports/findbugs")
+	effort = "max"
+}
+tasks.withType(FindBugs) {
+	reports {
+		xml.enabled false
+		html.enabled true
+		html.stylesheet resources.text.fromFile('config/xsl/findbugs-custom.xsl')
+	}
+}
+
+apply plugin: "jacoco"
+jacocoTestReport {
+	reports {
+		xml.enabled false
+		csv.enabled false
+		html.destination "${buildDir}/jacocoHtml"
+	}
+}
+
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: "com.commercehub.gradle.plugin.avro-base"
@@ -55,19 +93,21 @@ sourceSets {
 
 
 dependencies {
-	compile "org.apache.avro:avro:1.8.2"
+
 	compile("org.springframework.boot:spring-boot-starter-web")
 	implementation('org.springframework.boot:spring-boot-starter-actuator')
 	//implementation('org.springframework.boot:spring-boot-starter-security')
 	//testImplementation('org.springframework.security:spring-security-test')
+
 	implementation('org.springframework.kafka:spring-kafka')
 	testCompile('org.springframework.kafka:spring-kafka-test')
-	compile ('org.apache.avro:avro:1.8.1')
 	//compile ('org.apache.kafka:kafka_2.11:2.0.0')
+
+
 	//testCompile('org.springframework.boot:spring-boot-starter-test')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
-	compile('org.apache.avro:avro:1.8.2')
 
+	compile('org.apache.avro:avro:1.8.2')
 }
 
 idea {

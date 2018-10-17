@@ -12,6 +12,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
 import org.springframework.kafka.listener.MessageListenerContainer;
@@ -24,8 +25,8 @@ import com.carlospatinos.salesforceconnector.avro.User;
 @SpringBootTest
 @Ignore
 public class SpringKafkaApplicationTest {
-
-    private static final String SALESFORCE_TOPIC = "salesforce-event";
+    //@Value("${app.topic.salesforce}")
+    private static final String SALESFORCE_TOPIC = "salesforce-event-test";
 
     @Autowired
     private EventSender sender;
@@ -44,6 +45,7 @@ public class SpringKafkaApplicationTest {
         // wait until the partitions are assigned
         for (MessageListenerContainer messageListenerContainer : kafkaListenerEndpointRegistry
                 .getListenerContainers()) {
+            System.out.println("Listener is: ----->>" + messageListenerContainer.toString());
             ContainerTestUtils.waitForAssignment(messageListenerContainer,
                     embeddedKafka.getPartitionsPerTopic());
         }
@@ -51,6 +53,7 @@ public class SpringKafkaApplicationTest {
 
     @Test
     public void testReceiver() throws Exception {
+        System.out.println("Reading from: " + SALESFORCE_TOPIC);
         User user = User.newBuilder().setName("John Doe").setFavoriteColor("green")
                 .setFavoriteNumber(null).build();
         sender.send(SALESFORCE_TOPIC, user);

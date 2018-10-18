@@ -43,14 +43,14 @@ public class AvroDeserializer<T extends SpecificRecordBase> implements Deseriali
             T result = null;
 
             if (data != null) {
-                LOGGER.debug("data='{}'", DatatypeConverter.printHexBinary(data));
+                LOGGER.info("avro data='{}'", DatatypeConverter.printHexBinary(data));
 
                 DatumReader<GenericRecord> datumReader =
                         new SpecificDatumReader<>(targetType.newInstance().getSchema());
                 Decoder decoder = DecoderFactory.get().binaryDecoder(data, null);
 
                 result = (T) datumReader.read(null, decoder);
-                LOGGER.debug("deserialized data='{}'", result);
+                LOGGER.info("deserialized data='{}'", result);
             }
             return result;
         } catch (Exception ex) {

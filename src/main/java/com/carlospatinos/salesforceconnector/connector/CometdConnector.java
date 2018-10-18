@@ -252,7 +252,7 @@ public class CometdConnector {
     }
 
     private Future<Boolean> connect() {
-        log.info("EmpConnector connecting");
+        log.info("Connecting to salesforce");
         CompletableFuture<Boolean> future = new CompletableFuture<>();
 
         try {

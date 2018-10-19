@@ -44,3 +44,5 @@ Delete:
 ```json
 {"event":{"createdDate":"2018-10-18T14:53:48.101Z","replayId":7,"type":"deleted"},"sobject":{"Id":"a001t000002SlMpAAK"}}
 ```
+
+To enable datadog use the following: http://micrometer.io/docs/registry/datadog 

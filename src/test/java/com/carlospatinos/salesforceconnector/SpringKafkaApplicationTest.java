@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.concurrent.TimeUnit;
 
+import com.carlospatinos.salesforceconnector.avro.Transaction;
 import com.carlospatinos.salesforceconnector.event.EventReceiver;
 import com.carlospatinos.salesforceconnector.event.EventSender;
 import org.junit.Before;
@@ -19,13 +20,12 @@ import org.springframework.kafka.listener.MessageListenerContainer;
 import org.springframework.kafka.test.rule.KafkaEmbedded;
 import org.springframework.kafka.test.utils.ContainerTestUtils;
 import org.springframework.test.context.junit4.SpringRunner;
-import com.carlospatinos.salesforceconnector.avro.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Ignore
 public class SpringKafkaApplicationTest {
-    //@Value("${app.topic.salesforce}")
+    @Value("${app.topic.salesforce}")
     private static final String SALESFORCE_TOPIC = "salesforce-event-test";
 
     @Autowired
@@ -54,9 +54,9 @@ public class SpringKafkaApplicationTest {
     @Test
     public void testReceiver() throws Exception {
         System.out.println("Reading from: " + SALESFORCE_TOPIC);
-        User user = User.newBuilder().setName("John Doe").setFavoriteColor("green")
-                .setFavoriteNumber(null).build();
-        sender.send(SALESFORCE_TOPIC, user);
+        Transaction transaction = Transaction.newBuilder().setUniqueId("1-carlos").setEventType("update")
+                .setReplayId(1).build();
+        sender.send(transaction);
 
         receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
         assertThat(receiver.getLatch().getCount()).isEqualTo(0);

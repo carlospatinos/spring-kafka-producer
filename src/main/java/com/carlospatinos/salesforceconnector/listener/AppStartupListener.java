@@ -1,6 +1,6 @@
 package com.carlospatinos.salesforceconnector.listener;
 
-import com.carlospatinos.salesforceconnector.avro.User;
+import com.carlospatinos.salesforceconnector.avro.Transaction;
 import com.carlospatinos.salesforceconnector.connector.BayeuxParameters;
 import com.carlospatinos.salesforceconnector.connector.BearerTokenProvider;
 import com.carlospatinos.salesforceconnector.connector.CometdConnector;
@@ -19,6 +19,8 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+
+import org.slf4j.MDC;
 
 import static com.carlospatinos.salesforceconnector.connector.LoginHelper.login;
 
@@ -62,15 +64,18 @@ public class AppStartupListener {
                 (
                         event -> {
                             try {
+
                                 JSONObject eventObj = new JSONObject(event);
                                 log.info("New event received as: {}", JSON.toString(event));
-                                String name = eventObj.getJSONObject("sobject").getString("Id");
+                                String uniqueId = eventObj.getJSONObject("sobject").getString("Id");
                                 String type = eventObj.getJSONObject("event").getString("type");
                                 Integer replayId = eventObj.getJSONObject("event").getInt("replayId");
-                                User user = User.newBuilder().setName(name).setFavoriteColor(type)
-                                        .setFavoriteNumber(replayId).build();
+                                Transaction user = Transaction.newBuilder().setUniqueId(uniqueId).setEventType(type)
+                                        .setReplayId(replayId).build();
+                                // TODO this is the starting point of the action to send events
+                                MDC.put("uniqueId", uniqueId);
                                 // TODO fix the topic
-                                sender.send("salesforce-event",  user);
+                                sender.send(user);
                             } catch (ClassCastException e) {
                                 log.error(e.getMessage());
                             }

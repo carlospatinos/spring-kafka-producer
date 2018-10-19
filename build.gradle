@@ -115,6 +115,9 @@ dependencies {
 	compile('org.cometd.java:cometd-java-client:3.1.4')
 	compile('org.json:json:20180813')
 	compile('org.apache.avro:avro:1.8.2')
+
+	compile 'io.micrometer:micrometer-registry-datadog:latest.release'
+
 }
 
 idea {

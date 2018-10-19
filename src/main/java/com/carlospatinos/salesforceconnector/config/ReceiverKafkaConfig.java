@@ -3,7 +3,7 @@ package com.carlospatinos.salesforceconnector.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.carlospatinos.salesforceconnector.avro.User;
+import com.carlospatinos.salesforceconnector.avro.Transaction;
 import com.carlospatinos.salesforceconnector.event.EventReceiver;
 import com.carlospatinos.salesforceconnector.serializer.AvroDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -39,14 +39,14 @@ public class ReceiverKafkaConfig {
     }
 
     @Bean
-    public ConsumerFactory<String, User> consumerFactory() {
+    public ConsumerFactory<String, Transaction> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs(), new StringDeserializer(),
-                new AvroDeserializer<>(User.class));
+                new AvroDeserializer<>(Transaction.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, User> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, User> factory =
+    public ConcurrentKafkaListenerContainerFactory<String, Transaction> kafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Transaction> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
 

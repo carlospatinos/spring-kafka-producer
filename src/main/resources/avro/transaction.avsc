@@ -1,0 +1,10 @@
+{
+  "namespace": "com.carlospatinos.salesforceconnector.avro",
+  "type": "record",
+  "name": "Transaction",
+  "fields": [
+    {"name": "unique_id", "type": "string"},
+    {"name": "replay_id",  "type": ["int", "null"]},
+    {"name": "event_type", "type": ["string", "null"]}
+  ]
+}

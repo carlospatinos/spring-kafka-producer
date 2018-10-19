@@ -1,6 +1,6 @@
 package com.carlospatinos.salesforceconnector.config;
 
-import com.carlospatinos.salesforceconnector.avro.User;
+import com.carlospatinos.salesforceconnector.avro.Transaction;
 import com.carlospatinos.salesforceconnector.event.EventSender;
 import com.carlospatinos.salesforceconnector.serializer.AvroSerializer;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -32,12 +32,12 @@ public class SenderKafkaConfig {
     }
 
     @Bean
-    public ProducerFactory<String, User> producerFactory() {
+    public ProducerFactory<String, Transaction> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }
 
     @Bean
-    public KafkaTemplate<String, User> kafkaTemplate() {
+    public KafkaTemplate<String, Transaction> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 

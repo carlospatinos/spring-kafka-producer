@@ -2,7 +2,7 @@ package com.carlospatinos.salesforceconnector.event;
 
 import java.util.concurrent.CountDownLatch;
 
-import com.carlospatinos.salesforceconnector.avro.User;
+import com.carlospatinos.salesforceconnector.avro.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -20,8 +20,8 @@ public class EventReceiver {
     }
 
     @KafkaListener(topics = "${app.topic.salesforce}")
-    public void receive(User user) {
-        LOGGER.info("received user='{}'", user.toString());
+    public void receive(Transaction transaction) {
+        LOGGER.info("received user='{}'", transaction);
         latch.countDown();
     }
 }

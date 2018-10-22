@@ -15,6 +15,7 @@ import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 public class AvroDeserializer<T extends SpecificRecordBase> implements Deserializer<T> {
 
@@ -50,6 +51,7 @@ public class AvroDeserializer<T extends SpecificRecordBase> implements Deseriali
                 Decoder decoder = DecoderFactory.get().binaryDecoder(data, null);
 
                 result = (T) datumReader.read(null, decoder);
+                // TODO this is the starting point of the action to send events
                 LOGGER.info("deserialized data='{}'", result);
             }
             return result;

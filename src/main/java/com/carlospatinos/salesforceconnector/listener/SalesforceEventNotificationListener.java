@@ -25,9 +25,9 @@ import org.slf4j.MDC;
 import static com.carlospatinos.salesforceconnector.connector.LoginHelper.login;
 
 @Component
-public class AppStartupListener {
+public class SalesforceEventNotificationListener {
 
-    private static final Logger log = LoggerFactory.getLogger(AppStartupListener.class);
+    private static final Logger log = LoggerFactory.getLogger(SalesforceEventNotificationListener.class);
 
     @Value("${salesforce.username}")
     private String username;
@@ -66,18 +66,23 @@ public class AppStartupListener {
                             try {
 
                                 JSONObject eventObj = new JSONObject(event);
-                                log.info("New event received as: {}", JSON.toString(event));
                                 String uniqueId = eventObj.getJSONObject("sobject").getString("Id");
                                 String type = eventObj.getJSONObject("event").getString("type");
                                 Integer replayId = eventObj.getJSONObject("event").getInt("replayId");
-                                Transaction user = Transaction.newBuilder().setUniqueId(uniqueId).setEventType(type)
-                                        .setReplayId(replayId).build();
                                 // TODO this is the starting point of the action to send events
                                 MDC.put("uniqueId", uniqueId);
+
+                                log.info("New event received as: {}", JSON.toString(event));
+                                Transaction user = Transaction.newBuilder().setUniqueId(uniqueId).setEventType(type)
+                                        .setReplayId(replayId).build();
+
+
                                 // TODO fix the topic
                                 sender.send(user);
                             } catch (ClassCastException e) {
                                 log.error(e.getMessage());
+                            } finally {
+                                MDC.clear();
                             }
 
                         }

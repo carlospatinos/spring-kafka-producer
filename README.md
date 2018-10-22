@@ -24,8 +24,9 @@ insert pushTopic;
 ```bash
 docker-compose up
 ```
-6. Start the application (providing user, password, token and channel to subscribe, optionally use the replayMode)
-7. Once everything is ready
+6. Reset the token in : https://app.force.com/lightning/settings/personal/ResetApiToken/home
+7. Start the application (providing user, password, token and channel to subscribe, optionally use the replayMode)
+8. Once everything is ready
 
 You will receive events as specified in the publishToTopic query. 
 
@@ -46,3 +47,6 @@ Delete:
 ```
 
 To enable datadog use the following: http://micrometer.io/docs/registry/datadog 
+
+
+TODO improve testing

@@ -1,0 +1,35 @@
+pipeline {
+  agent any
+  stages {
+    stage ('Clone') {
+      steps {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/carlospatinos/spring-kafka-producer.git']]])
+      }
+    }
+    stage('Build Project') {
+      steps {
+        echo 'building $PWD'
+        sh 'pwd'
+        sh 'ls /home/gradle/project'
+        sh 'mvn clean'
+      }
+    }
+    stage('Testing') {
+      steps {
+        echo 'Testing'
+      }
+    }
+    stage('Static Analysis') {
+            agent {
+              docker {
+                image 'gradle:latest'
+                args '-v $PWD:/home/gradle/project -w /home/gradle/project'
+              }
+            }
+            steps {
+              echo 'building'
+              sh 'gradle pmdMain'
+            }
+    }
+  }
+}
